@@ -1,0 +1,30 @@
+<div class="container">
+  <h2>Create Quiz</h2>
+  <div
+    *ngFor="let question of questionnaire.questions; let i = index"
+    class="question-block"
+  >
+    <span>{{ i + 1 }}.</span>
+    <input type="text" [(ngModel)]="question.text" placeholder="Question" />
+    <select [(ngModel)]="question.type">
+      <option value="text">Text</option>
+      <option value="single-choice">Single choice</option>
+    </select>
+    <button (click)="removeQuestion(i)">Remove</button>
+
+    <div *ngIf="question.type === 'single-choice'">
+      <h4>Answers</h4>
+      <div *ngFor="let choice of question.choices; let j = index">
+        <span>{{ j + 1 }}.</span>
+        <input
+          type="text"
+          [(ngModel)]="question.choices[j]"
+          placeholder="Choice"
+        />
+        <button (click)="removeChoice(i, j)">Remove</button>
+      </div>
+      <button (click)="addChoice(i)">Add choice</button>
+    </div>
+  </div>
+  <button (click)="addQuestion()">Add question</button>
+</div>

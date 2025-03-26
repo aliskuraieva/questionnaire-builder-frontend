@@ -1,0 +1,30 @@
+<div class="container">
+  <h2>Quiz Catalog</h2>
+  <div class="quiz-grid">
+    <div *ngFor="let quiz of quizzes" class="quiz-card">
+      <div class="quiz-header">
+        <h3>{{ quiz.title }}</h3>
+        <button class="menu-btn">⋮</button>
+      </div>
+      <p>{{ quiz.description }}</p>
+      <a href="#" (click)="openQuiz(quiz.id)"
+        >Questions: {{ quiz.questionCount }}</a
+      >
+    </div>
+  </div>
+  <div class="pagination">
+    <button
+      (click)="onPageChange(currentPage - 1)"
+      [disabled]="currentPage === 1"
+    >
+      Previous
+    </button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button
+      (click)="onPageChange(currentPage + 1)"
+      [disabled]="currentPage >= totalPages"
+    >
+      Next
+    </button>
+  </div>
+</div>
