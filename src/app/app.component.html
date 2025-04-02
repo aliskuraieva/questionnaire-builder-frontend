@@ -1,7 +1,6 @@
 <div class="app">
   <header>
-    <h1>Questionnaire Builder App</h1>
-    <nav>
+    <nav *ngIf="!isOnSpecialPage">
       <ul>
         <li><a routerLink="/catalog">Catalog</a></li>
         <li><a routerLink="/create-edit">Create/Edit</a></li>

@@ -1,0 +1,22 @@
+<div class="results-container">
+  <h2>Quiz Results</h2>
+
+  <div *ngIf="quizResults">
+    <h3>{{ quizResults.title }}</h3>
+    <p>{{ quizResults.description }}</p>
+
+    <div class="responses">
+      <h4>Your Answers:</h4>
+      <ul>
+        <li *ngFor="let response of quizResults.responses">
+          <strong>Question {{ response.questionId }}:</strong>
+          {{ response.answer }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="time-spent">
+      <p>Time spent: {{ quizResults.timeTaken | date:'HH:mm:ss' }}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="container">
+  <h2>Create a New Quiz</h2>
+  <form>
+    <label for="title">Title:</label>
+    <input
+      id="title"
+      type="text"
+      [(ngModel)]="quiz.title"
+      name="title"
+      required
+    />
+
+    <label for="description">Description:</label>
+    <textarea
+      id="description"
+      [(ngModel)]="quiz.description"
+      name="description"
+      required
+    ></textarea>
+
+    <h3>Questions</h3>
+    <div
+      *ngFor="let question of quiz.questions; let i = index"
+      class="question-block"
+    >
+      <input
+        type="text"
+        [(ngModel)]="question.questionText"
+        name="questionText{{ i }}"
+        placeholder="Enter question text"
+        required
+      />
+
+      <select [(ngModel)]="question.type" name="questionType{{ i }}">
+        <option value="text">Text</option>
+        <option value="single-choice">Single Choice</option>
+        <option value="multiple-choice">Multiple Choice</option>
+      </select>
+
+      <div
+        *ngIf="
+          question.type === 'single-choice' ||
+          question.type === 'multiple-choice'
+        "
+      >
+        <label for="choices">Choices:</label>
+        <div *ngFor="let choice of question.choices; let j = index">
+          <input
+            type="text"
+            [(ngModel)]="question.choices[j]"
+            name="choice-{{ i }}-{{ j }}"
+            placeholder="Enter choice"
+            required
+          />
+          <button type="button" (click)="removeChoice(i, j)">
+            Remove Choice
+          </button>
+        </div>
+        <button type="button" (click)="addChoice(i)">Add Choice</button>
+      </div>
+
+      <button type="button" (click)="removeQuestion(i)">Remove Question</button>
+    </div>
+
+    <button type="button" (click)="addQuestion()">Add Question</button>
+    <button type="button" (click)="saveQuiz()">Save Quiz</button>
+    <button type="button" (click)="goToCatalog()">Cancel</button>
+  </form>
+</div>

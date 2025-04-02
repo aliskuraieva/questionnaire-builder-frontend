@@ -18,6 +18,8 @@ export class CatalogComponent implements OnInit {
   pageSize: number = 10;
   totalPages: number = 1;
   totalItems: number = 0;
+  selectedQuiz: Questionnaire | null = null;
+  isModalOpen: boolean = false;
 
   constructor(
     private questionnaireService: QuestionnaireService,
@@ -30,7 +32,7 @@ export class CatalogComponent implements OnInit {
 
   loadQuizzes(): void {
     this.questionnaireService
-      .getQuestionnaires(this.currentPage, this.pageSize)
+      .getQuiz(this.currentPage, this.pageSize)
       .subscribe((data) => {
         this.quizzes = data.items;
         this.totalItems = data.totalCount;
@@ -46,7 +48,32 @@ export class CatalogComponent implements OnInit {
     this.loadQuizzes();
   }
 
-  openQuiz(quizId: number): void {
-    this.router.navigate([`/take/${quizId}`]);
+  createQuiz(): void {
+    this.router.navigate(['/create-edit']);
+  }
+
+  startQuiz(quizId: number | undefined): void {
+    if (quizId !== undefined) {
+      this.router.navigate(['/take', quizId]);
+    } else {
+      console.error('Quiz ID is undefined');
+    }
+  }
+
+  editQuiz(quizId: number): void {
+    this.router.navigate(['/create-edit', quizId]);
+  }
+
+  deleteQuiz(quizId: number): void {
+    if (confirm('Are you sure you want to delete this quiz?')) {
+      this.questionnaireService.deleteQuiz(quizId).subscribe({
+        next: () => {
+          this.loadQuizzes();
+        },
+        error: (error) => {
+          console.error('Error deleting quiz:', error);
+        },
+      });
+    }
   }
 }

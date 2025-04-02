@@ -1,13 +1,14 @@
 import { Routes } from '@angular/router';
 import { CatalogComponent } from './pages/catalog/catalog.component';
-import { CreateEditComponent } from './pages/create-edit/create-edit.component';
-import { TakeComponent } from './pages/take/take.component';
+import { CreateQuizComponent } from './pages/create-edit/create-quiz.component';
+import { TakeQuizComponent } from './pages/take/take-quiz.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '', pathMatch: 'full' },
   { path: 'catalog', component: CatalogComponent },
-  { path: 'create-edit/:id', component: CreateEditComponent },
-  { path: 'create-edit', component: CreateEditComponent },
-  { path: 'take/:id', component: TakeComponent },
-  { path: 'take', component: TakeComponent },
+  { path: 'create-edit', component: CreateQuizComponent },
+  { path: 'create-edit/:id', component: CreateQuizComponent },
+  { path: 'take/:id', component: TakeQuizComponent },
+  { path: '', redirectTo: '/catalog', pathMatch: 'full' },
+  { path: '**', redirectTo: '/catalog' },
 ];
+

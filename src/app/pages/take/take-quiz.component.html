@@ -1,0 +1,61 @@
+<div class="container">
+  <h2>{{ quiz?.title }}</h2>
+
+  <p>{{ quiz?.description }}</p>
+
+  <form (ngSubmit)="submitQuiz()">
+    <div
+      *ngFor="let question of quiz?.questions; let i = index"
+      class="question-item"
+    >
+      <div class="form-group">
+        <label for="question{{ i }}">{{ question.questionText }}</label>
+
+        <div *ngIf="question.type === 'text'">
+          <input
+            type="text"
+            [(ngModel)]="responses[i].answer"
+            name="response{{ i }}"
+            class="form-control"
+            placeholder="Your answer"
+          />
+        </div>
+
+        <div *ngIf="question.type === 'single-choice'">
+          <div
+            *ngFor="let choice of question.choices; let j = index"
+            class="choice-item"
+          >
+            <label>
+              <input
+                type="radio"
+                [(ngModel)]="responses[i].answer"
+                name="response{{ i }}"
+                [value]="choice"
+              />
+              {{ choice }}
+            </label>
+          </div>
+        </div>
+
+        <div *ngIf="question.type === 'multiple-choice'">
+          <div
+            *ngFor="let choice of question.choices; let j = index"
+            class="choice-item"
+          >
+            <label>
+              <input
+                type="checkbox"
+                [(ngModel)]="responses[i].answer"
+                [value]="choice"
+              />
+              {{ choice }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success submit-btn">Submit</button>
+  </form>
+</div>

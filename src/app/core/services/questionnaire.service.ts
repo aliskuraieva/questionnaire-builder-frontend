@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Questionnaire } from '../../domain/questionnaire/questionnaire.model';
+import {
+  Questionnaire,
+  UserResponse,
+} from '../../domain/questionnaire/questionnaire.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +14,7 @@ export class QuestionnaireService {
 
   constructor(private http: HttpClient) {}
 
-  getQuestionnaires(
+  getQuiz(
     page: number = 1,
     pageSize: number = 10
   ): Observable<{ items: Questionnaire[]; totalCount: number }> {
@@ -20,18 +23,35 @@ export class QuestionnaireService {
     );
   }
 
-  getQuestionnaireById(id: number): Observable<Questionnaire> {
+  getQuizById(id: number): Observable<Questionnaire> {
+    if (!id) throw new Error('Quiz ID is required');
     return this.http.get<Questionnaire>(`${this.apiUrl}/questionnaires/${id}`);
   }
 
-  createQuestionnaire(questionnaire: Questionnaire): Observable<Questionnaire> {
+  submitQuizResults(
+    responses: UserResponse[],
+    timeTaken: number
+  ): Observable<any> {
+    const results = {
+      responses: responses,
+      timeTaken: timeTaken,
+    };
+
+    return this.http.post('/questionnaires/submit-quiz', results);
+  }
+
+  getQuizResults(quizId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/results/${quizId}`);
+  }
+
+  createQuiz(questionnaire: Questionnaire): Observable<Questionnaire> {
     return this.http.post<Questionnaire>(
       `${this.apiUrl}/questionnaires`,
       questionnaire
     );
   }
 
-  updateQuestionnaire(
+  editQuiz(
     id: number,
     questionnaire: Questionnaire
   ): Observable<Questionnaire> {
@@ -41,12 +61,8 @@ export class QuestionnaireService {
     );
   }
 
-  deleteQuestionnaire(id: number): Observable<void> {
+  deleteQuiz(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/questionnaires/${id}`);
-  }
-
-  submitAnswers(responses: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/questionnaires/submit`, responses);
   }
 
 }
